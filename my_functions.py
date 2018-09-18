@@ -133,6 +133,171 @@ def plot_models_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c,vmin=1, vmax=4
     plt.tight_layout()
     plt.show()
     
+def plot_function_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c):
+    '''
+    Plot real and interpolated models in 6 subplots.
+    
+    Input
+    profz: scalar - depth.
+    distx: scalar - distance in x direction.
+    disty: scalar - distance in y direction.
+    x: np array - coordinates x of the model.
+    y: np array - coordinates y of the model.
+    z: np array - coordinates z of the model.
+    x0: np array - coordinates x of the model.
+    y0: np array - coordinates y of the interpolated model.
+    z0: np array - coordinates z of the interpolated model.
+    rho_o: np matrix - observed model to be ploted.
+    rho_c: np matrix - calculated model to be ploted.
+    
+    output
+    plot
+    '''
+    
+    x_plot = np.argmin(np.abs(x-distx))
+    y_plot = np.argmin(np.abs(y-disty))
+    z_plot = np.argmin(np.abs(z-profz))
+    x0_plot = np.argmin(np.abs(x0-distx))
+    y0_plot = np.argmin(np.abs(y0-disty))
+    z0_plot = np.argmin(np.abs(z0-profz))
+    
+    mx,my = np.meshgrid(y,x)
+    mx1,my1 = np.meshgrid(z,y)
+    mx2,my2 = np.meshgrid(z,x)
+    
+    m0x,m0y = np.meshgrid(y0,x0)
+    m0x1,m0y1 = np.meshgrid(z0,y0)
+    m0x2,m0y2 = np.meshgrid(z0,x0)
+    
+    plt.figure(figsize=(14,10))
+
+    plt.subplot(3,2,1)
+    plt.pcolor(mx,my,rho_o[:,:,z_plot])
+    plt.colorbar()
+    plt.xlabel('Y')
+    plt.ylabel('X')
+    plt.title('Observed')
+    
+    plt.subplot(3,2,2)
+    plt.pcolor(m0x,m0y,rho_c[:,:,z0_plot])
+    plt.colorbar()
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Calculated')
+
+    plt.subplot(3,2,3)
+    plt.pcolor(my1,mx1,rho_o[x_plot,:,:])
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z),np.min(z))
+    plt.colorbar()
+
+    plt.subplot(3,2,4)
+    plt.pcolor(m0y1,m0x1,rho_c[x0_plot,:,:])
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z0),np.min(z0))
+    plt.colorbar()
+
+    plt.subplot(3,2,5)
+    plt.pcolor(my2,mx2,rho_o[:,y_plot,:])
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z),np.min(z))
+    plt.colorbar()
+
+    plt.subplot(3,2,6)
+    plt.pcolor(m0y2,m0x2,rho_c[:,y0_plot,:])
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z0),np.min(z0))
+    plt.colorbar()
+    
+    plt.tight_layout()
+    plt.show()
+    
+def plot_function_interp(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c):
+    '''
+    Plot real and interpolated models.
+    
+    Input
+    profz: scalar - depth.
+    distx: scalar - distance in x direction.
+    disty: scalar - distance in y direction.
+    x: np array - coordinates x of the model.
+    y: np array - coordinates y of the model.
+    z: np array - coordinates z of the model.
+    x0: np array - coordinates x of the model.
+    y0: np array - coordinates y of the interpolated model.
+    z0: np array - coordinates z of the interpolated model.
+    rho_o: np matrix - observed model to be ploted.
+    rho_c: np matrix - calculated model to be ploted.
+    
+    output
+    plot
+    '''
+    
+    x_plot = np.argmin(np.abs(x-distx))
+    y_plot = np.argmin(np.abs(y-disty))
+    z_plot = np.argmin(np.abs(z-profz))
+    x0_plot = np.argmin(np.abs(x0-distx))
+    y0_plot = np.argmin(np.abs(y0-disty))
+    z0_plot = np.argmin(np.abs(z0-profz))
+    
+    mx,my = np.meshgrid(y,x)
+    mx1,my1 = np.meshgrid(z,y)
+    mx2,my2 = np.meshgrid(z,x)
+    
+    m0x,m0y = np.meshgrid(y0,x0)
+    m0x1,m0y1 = np.meshgrid(z0,y0)
+    m0x2,m0y2 = np.meshgrid(z0,x0)
+    
+    plt.figure(figsize=(14,10))
+
+    plt.subplot(3,1,1)
+    plt.pcolor(mx,my,rho_o[:,:,z_plot])
+    plt.colorbar()
+    plt.xlabel('Y')
+    plt.ylabel('X')
+    plt.title('Observed')
+    
+    plt.subplot(3,2,2)
+    plt.pcolor(m0x,m0y,rho_c[:,:,z0_plot])
+    plt.colorbar()
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Calculated')
+
+    plt.subplot(3,2,3)
+    plt.pcolor(my1,mx1,rho_o[x_plot,:,:])
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z),np.min(z))
+    plt.colorbar()
+
+    plt.subplot(3,2,4)
+    plt.pcolor(m0y1,m0x1,rho_c[x0_plot,:,:])
+    plt.xlabel('Y')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z0),np.min(z0))
+    plt.colorbar()
+
+    plt.subplot(3,2,5)
+    plt.pcolor(my2,mx2,rho_o[:,y_plot,:])
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z),np.min(z))
+    plt.colorbar()
+
+    plt.subplot(3,2,6)
+    plt.pcolor(m0y2,m0x2,rho_c[:,y0_plot,:])
+    plt.xlabel('X')
+    plt.ylabel('Z')
+    plt.ylim(np.max(z0),np.min(z0))
+    plt.colorbar()
+    
+    plt.tight_layout()
+    plt.show()
 
 def select_area(xmin,xmax,ymin,ymax,zmin,zmax,x,y,z,rho):
     '''
