@@ -46,7 +46,7 @@ def reverse_colourmap(cmap, name = 'my_cmap_r'):
     
     return my_cmap_r
 
-def plot_models_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c,vmin=1, vmax=400):
+def plot_models_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c,vmin=1, vmax=1000):
     '''
     Plot real and interpolated models in 6 subplots.
     
