@@ -161,21 +161,21 @@ def plot_function_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c):
     y0_plot = np.argmin(np.abs(y0-disty))
     z0_plot = np.argmin(np.abs(z0-profz))
     
-    mx,my = np.meshgrid(y,x)
-    mx1,my1 = np.meshgrid(z,y)
-    mx2,my2 = np.meshgrid(z,x)
+    my,mx = np.meshgrid(y,x)
+    mz1,my1 = np.meshgrid(z,y)
+    mz2,mx2 = np.meshgrid(z,x)
     
-    m0x,m0y = np.meshgrid(y0,x0)
-    m0x1,m0y1 = np.meshgrid(z0,y0)
-    m0x2,m0y2 = np.meshgrid(z0,x0)
+    m0y,m0x = np.meshgrid(y0,x0)
+    m0z1,m0y1 = np.meshgrid(z0,y0)
+    m0z2,m0x2 = np.meshgrid(z0,x0)
     
     plt.figure(figsize=(14,10))
 
     plt.subplot(3,2,1)
     plt.pcolor(mx,my,rho_o[:,:,z_plot])
     plt.colorbar()
-    plt.xlabel('Y')
-    plt.ylabel('X')
+    plt.xlabel('X')
+    plt.ylabel('Y')
     plt.title('Observed')
     
     plt.subplot(3,2,2)
@@ -186,28 +186,28 @@ def plot_function_6sub(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c):
     plt.title('Calculated')
 
     plt.subplot(3,2,3)
-    plt.pcolor(my1,mx1,rho_o[x_plot,:,:])
+    plt.pcolor(my1,mz1,rho_o[x_plot,:,:])
     plt.xlabel('Y')
     plt.ylabel('Z')
     plt.ylim(np.max(z),np.min(z))
     plt.colorbar()
 
     plt.subplot(3,2,4)
-    plt.pcolor(m0y1,m0x1,rho_c[x0_plot,:,:])
+    plt.pcolor(m0y1,m0z1,rho_c[x0_plot,:,:])
     plt.xlabel('Y')
     plt.ylabel('Z')
     plt.ylim(np.max(z0),np.min(z0))
     plt.colorbar()
 
     plt.subplot(3,2,5)
-    plt.pcolor(my2,mx2,rho_o[:,y_plot,:])
+    plt.pcolor(mx2,mz2,rho_o[:,y_plot,:])
     plt.xlabel('X')
     plt.ylabel('Z')
     plt.ylim(np.max(z),np.min(z))
     plt.colorbar()
 
     plt.subplot(3,2,6)
-    plt.pcolor(m0y2,m0x2,rho_c[:,y0_plot,:])
+    plt.pcolor(m0x2,m0z2,rho_c[:,y0_plot,:])
     plt.xlabel('X')
     plt.ylabel('Z')
     plt.ylim(np.max(z0),np.min(z0))
@@ -301,7 +301,8 @@ def plot_function_interp(distx,disty,profz,x,y,z,x0,y0,z0,rho_o,rho_c):
 
 def select_area(xmin,xmax,ymin,ymax,zmin,zmax,x,y,z,rho):
     '''
-    Returns the coordinate arrays x,y,z 
+    Select area and data points from 3D grid and returns the 
+    new coordinate arrays x,y,z and data points.
     '''
     assert (xmin >=0), 'coordinate must be higher than zero'
     assert (xmax >=0), 'coordinate must be higher than zero'
@@ -319,17 +320,17 @@ def select_area(xmin,xmax,ymin,ymax,zmin,zmax,x,y,z,rho):
     i_zmin = np.argmin(np.abs(z-zmin))
     i_zmax = np.argmin(np.abs(z-zmax))
 
-    x_ = x[i_xmin:i_xmax]
-    y_ = y[i_ymin:i_ymax]
-    z_ = z[i_zmin:i_zmax]
+    x_ = x[i_xmin:i_xmax+1]
+    y_ = y[i_ymin:i_ymax+1]
+    z_ = z[i_zmin:i_zmax+1]
 
-    X,Y,Z = np.meshgrid(x_,y_,z_)
+    X,Y,Z = np.meshgrid(x_,y_,z_,indexing='ij')
 
     x_1 = np.ravel(X)
     y_1 = np.ravel(Y)
     z_1 = np.ravel(Z)
     
-    rho_1 = rho[i_xmin:i_xmax,i_ymin:i_ymax,i_zmin:i_zmax]
+    rho_1 = rho[i_xmin:i_xmax+1,i_ymin:i_ymax+1,i_zmin:i_zmax+1]
     
     return x_1,y_1,z_1,x_,y_,z_,rho_1
 
