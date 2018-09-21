@@ -1,2 +1,2 @@
 # interpolation-misc
-Routines for interpolationg 3D models
+Routines for interpolating 3D models
